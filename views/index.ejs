@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Youtube Summarizer</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffd6d6;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        .bg-gray-900 {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        h1 {
+            font-size: 2em;
+            margin: 0.9em 2px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 0.5em;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2777e0;
+        }
+        .responsive-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            padding-top: 16px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .responsive-container iframe,
+        .responsive-container object,
+        .responsive-container embed,
+        .responsive-container video
+        {
+                        margin-left: auto;
+                        margin-right: auto;
+                        display: block
+                   }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 75vh;
+        }
+      button { position: relative; display: inline-block; border: none; background-color: #f0f0f0; cursor: pointer; }
+
+       .tooltip .tooltiptext { visibility: hidden; width: 120px; background-color: black; color: #fff; text-align: center; padding: 5px; border-radius: 6px;
+
+        position: absolute; z-index: 1; }
+
+       .tooltip:hover .tooltiptext { visibility: visible; }
+    </style>
+</head>
+<body>
+
+<h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-white-900 md:text-5xl lg:text-6xl dark:text-white">Youtube Video Summarizer</h1>
+<p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-white-800">The Youtube video summarizer website is a tool that allows users to automatically create a summary of Youtube videos. Users can simply enter the video URL and obtain a text document that summarizes the important points of the video. This helps users save time and quickly understand the videos</p>
+<br>
+<form method="post" id="myForm" class="flex flex-wrap justify-center items-center px-12 "  onsubmit="return validateInput()">
+    <div class="relative rounded-md flex-grow-1 max-w-lg mx-7">
+        <input type="text" id="input" name="input" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required class="w-full py-2 px-12 pr-20 rounded-md bg-gray-600 border-2 border-gray-600 focus:border-blue-800 focus:outline-none"/>
+        <select id="language-select" name="selectedLanguage" class=" text-white bg-gray-600 absolute inset-y-0 right-0 py-3/2 px-1 rounded-md focus:outline-none ">
+            <option value="tr">Turkish</option>
+            <option value="en">English</option>
+        </select>
+        <div class="absolute inset-y-0 left-0 flex items-center pl-4">
+            <svg class="h-6 w-6 text-gray-400" viewBox  ="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M22.5 21L16.8 15.3C18.3 13.5 19.2 11.3 19.2 9C19.2 4.5 15.5 0.75 11 0.75C6.5 0.75 2.75 4.5 2.75 9C2.75 13.5 6.5 17.25 11 17.25C13.1 17.25 15.1 16.35 16.8 15.3L22.5 21ZM11 15C8.25 15 6 12.75 6 10C6 7.25 8.25 5 11 5C13.75 5 16 7.25 16 10C16 12.75 13.75 15 11 15Z" />
+            </svg>
+        </div>
+    </div>
+
+    <button type="submit" id="submit-btn" class="py-2 px-6 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-bold ml-4">
+        Summarize
+    </button>
+
+
+</form>
+<div class="flex items-center justify-center">
+    <div id="error-message" class="text-red-600 font-bold p-4">
+
+    </div>
+</div>
+
+<div id="loading-spinner" class="hidden flex items-center justify-center fixed inset-0 z-50 w-full h-full bg-gray-800 bg-opacity-75">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+</div>
+
+<script>
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const myForm = document.getElementById('myForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    myForm.addEventListener('submit', function() {
+        if (validateInput()) {
+            loadingSpinner.classList.remove('hidden');
+        }
+    });
+
+    submitBtn.addEventListener('click', showLoadingSpinner);
+
+    function validateInput() {
+        const inputField = document.getElementById("input");
+        const errorMessage = document.getElementById("error-message");
+        const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}$/;
+
+        if (!regex.test(inputField.value)) {
+            errorMessage.innerHTML = "<span>       Please enter a valid YouTube video link.</span>";
+            return false;
+        }
+        errorMessage.innerHTML = "";
+        return true;
+    }
+</script>
+
+
+
+
+<% if (typeof algo !== 'undefined' && algo !== null) { %>
+
+
+<script>
+    function copyText(id,myTooltip) {
+        const text = document.getElementById(id).textContent;
+        navigator.clipboard.writeText(text);
+        const tooltip = document.getElementById(myTooltip);
+        tooltip.innerHTML = "Copied!";
+    }
+</script>
+<div class="flex items-center justify-center">
+    <h5 class="text-lg font-bold dark:text-white"><%=algo.title%></h5>
+
+</div>
+<div class="container mx-auto px-6 py-4">
+  <div class="grid grid-cols-2 gap-4">
+      <div class="bg-black rounded-md">
+          <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
+              <span>Full Subtitle View</span>
+              <button class="tooltip" style="background: #404040; color: white; border: 1px solid #342f26;" onclick="copyText('longsub','myTooltip1')">
+                  Copy text
+                  <span class="tooltiptext" id="myTooltip1" style="background-color: #404040; color: white;">Copy to clipboard</span>
+              </button>
+
+          </div>
+          <div class="bg-gray-900 p-4 overflow-y-scroll h-64 border-2 border-black">
+              <p id="longsub" class="text-white text-sm">
+                  <%=algo.longSub %></p>
+          </div>
+      </div>
+      <div class="bg-black rounded-md">
+          <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
+              <span>The Most Important Parts of the Video</span>
+              <button class="tooltip" style="background: #404040; color: white; border: 1px solid #342f26;"  onclick="copyText('summary','myTooltip2')">
+                  Copy text
+                  <span class="tooltiptext" id="myTooltip2" style="background-color: #404040; color: white;">Copy to clipboard</span>
+              </button>
+          </div>
+    <div class="bg-gray-900 p-4 rounded-l-lg overflow-y-scroll h-64 border-2 border-black hover:border-green-300 transition-all duration-300">
+      <p id="summary" class="text-white text-sm mb-4"><%=algo.summ %></p>
+    </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+<div id="summaryDiv" class="mx-auto my-6 max-w-md">
+    <div class="bg-black rounded-md ">
+        <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
+            <span>Summarize with Chatgpt</span>
+            <button class="tooltip" style="background: #404040; color: white; border: 1px solid #342f26;"  onclick="copyText('summarys','myTooltip3')">
+                Copy text
+                <span class="tooltiptext" id="myTooltip3" style="background-color: #404040; color: white;">Copy to clipboard</span>
+            </button>
+        </div>
+        <div class="bg-gray-900 p-4 overflow-y-scroll h-64 border-2 border-black">
+            <p id="summarys" class="text-white text-lg">
+                <%=algo.aiSummary %>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="responsive-container">
+    <div id="player"></div>
+    <div class="timestamps mt-4 flex items-center justify-center">
+        <h2 class="text-lg font-bold mb-2">Important Timestamps:</h2>
+
+        <ul class="flex flex-wrap gap-4">
+            <% for (var i = 0; i < algo.myData.length; i++) { %>
+            <li class="bg-blue-500 text-white rounded-lg px-3 py-1 hover:bg-blue-700 transition duration-300">
+                <a href="javascript:void(0);" onclick="setCurrentTime(<%=i%>)"><%=algo.myData[i]%></a>
+            </li>
+            <% } %>
+        </ul>
+    </div>
+</div>
+
+<script>
+
+
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            videoId: "<%= algo.input %>",
+        });
+    }
+    function setCurrentTime(slideNum) {
+        let myArray = [<%= algo.secondstoMin %>]
+
+        player.seekTo(myArray[slideNum]);
+    }
+
+</script>
+
+<% }
+else { %>
+    <p></p>
+    <% } %>
+</body>
+</html>
+
