@@ -4,7 +4,6 @@ import scraper from "youtube-captions-scraper";
 import dotenv from "dotenv"
 import fetch from "node-fetch";
 
-
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -114,10 +113,10 @@ app.post("/", async (req, res) => {
                     title = await getTitle(input)
                     console.log(title)
                     const text = summ.longResult;
-                    aiSummarys = await langDet(lang, summ.result)
-                    console.log(aiSummary)
+                  /*  aiSummarys = await langDet(lang, summ.result)
+                    console.log(aiSummary)*/
                     algo = {
-                        aiSummary: aiSummarys,
+                    /*    aiSummary: aiSummarys,*/
                         title: title,
                         summ: summ.result,
                         longSub: text,
@@ -195,10 +194,10 @@ function getYouTubeId(link) {
 
 async function langDet(lang, res) {
     if (lang === "tr") {
-        aiSummary = await getAiResponse(`bu metni özetleyebilir misin:${res}.`)
+        aiSummary = await getAiResponse(`Bu video transkripsiyonunu özetleyebilir misin:${res}.`)
 
     } else if (lang === "en") {
-        aiSummary = await getAiResponse(`summarize this text:${res}.`)
+        aiSummary = await getAiResponse(`summarize the transcription of this video?:${res}.`)
 
     }
     return aiSummary
