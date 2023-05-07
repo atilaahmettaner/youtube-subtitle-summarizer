@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RW3TKBBF6J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-RW3TKBBF6J');
+    </script>
     <title>Youtube Summarizer</title>
     <style>
         body {
@@ -201,7 +211,7 @@
         </div>
         <div class="bg-gray-900 p-4 overflow-y-scroll h-64 border-2 border-black">
             <p id="summarys" class="text-white text-lg">
-                This feature is currently disabled for a short period of time and will be back in service very soon.
+                <%=algo.aiSummary %>
             </p>
         </div>
     </div>

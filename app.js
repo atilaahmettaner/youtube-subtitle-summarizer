@@ -3,18 +3,20 @@ import bodyParser from "body-parser";
 import scraper from "youtube-captions-scraper";
 import dotenv from "dotenv"
 import fetch from "node-fetch";
-
+import analytics from "express-google-analytics"
 dotenv.config();
+
 const app = express();
 const port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 import {Configuration, OpenAIApi} from "openai";
 
+
 const configuration = new Configuration({
     apiKey: process.env.API_KEY,
 });
 const openai = new OpenAIApi(configuration);
-
+app.use(analytics(process.env.GOOGLE_ANALYTICS_TRACKING_ID));
 function removeStartingSentences(paragraph) {
     let sentences = paragraph.split(". ");
     let startIndex = 0;
@@ -52,7 +54,6 @@ let longResult = ""
 let summ = ""
 let aiSummary = ""
 let aiSummarys = ""
-let err = ""
 let title = ""
 
 app.use(bodyParser.urlencoded({extended: true}), express.static("public"));
@@ -113,10 +114,10 @@ app.post("/", async (req, res) => {
                     title = await getTitle(input)
                     console.log(title)
                     const text = summ.longResult;
-                  /*  aiSummarys = await langDet(lang, summ.result)
-                    console.log(aiSummary)*/
+                    aiSummarys = await langDet(lang, summ.result)
+                    console.log(aiSummary)
                     algo = {
-                    /*    aiSummary: aiSummarys,*/
+                        aiSummary: aiSummarys,
                         title: title,
                         summ: summ.result,
                         longSub: text,
