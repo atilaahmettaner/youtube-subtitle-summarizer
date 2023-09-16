@@ -4,6 +4,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RW3TKBBF6J"></script>
     <script>
@@ -66,10 +67,10 @@
         .responsive-container embed,
         .responsive-container video
         {
-                        margin-left: auto;
-                        margin-right: auto;
-                        display: block
-                   }
+            margin-left: auto;
+            margin-right: auto;
+            display: block
+        }
         .container {
             display: flex;
             flex-direction: column;
@@ -77,17 +78,35 @@
             justify-content: center;
             height: 75vh;
         }
-      button { position: relative; display: inline-block; border: none; background-color: #f0f0f0; cursor: pointer; }
+        button { position: relative; display: inline-block; border: none; background-color: #f0f0f0; cursor: pointer; }
 
-       .tooltip .tooltiptext { visibility: hidden; width: 120px; background-color: black; color: #fff; text-align: center; padding: 5px; border-radius: 6px;
+        .tooltip .tooltiptext { visibility: hidden; width: 120px; background-color: black; color: #fff; text-align: center; padding: 5px; border-radius: 6px;
 
-        position: absolute; z-index: 1; }
+            position: absolute; z-index: 1; }
 
-       .tooltip:hover .tooltiptext { visibility: visible; }
+        .tooltip:hover .tooltiptext { visibility: visible; }
     </style>
 </head>
 <body>
+<div class="flex justify-between items-center  p-4">
 
+    <div class=" text-2l font-extrabold">
+        <span class="text-blue-400">Subtitle</span>
+        <span class="text-white ">Summarizer</span>
+    </div>
+
+
+    <a
+            href="https://github.com/atilaahmettaner/youtube-subtitle-summarizer"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            class="flex items-center text-neutral-700 hover:text-neutral-500 dark:text-neutral-100 dark:hover:text-neutral-300"
+    >
+        <i class="fa-brands fa-github mr-2"></i>
+
+    </a>
+</div>
 <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-white-900 md:text-5xl lg:text-6xl dark:text-white">Youtube Video Summarizer</h1>
 <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-white-800">The Youtube video summarizer website is a tool that allows users to automatically create a summary of Youtube videos. Users can simply enter the video URL and obtain a text document that summarizes the important points of the video. This helps users save time and quickly understand the videos</p>
 <br>
@@ -95,8 +114,14 @@
     <div class="relative rounded-md flex-grow-1 max-w-lg mx-7">
         <input type="text" id="input" name="input" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required class="w-full py-2 px-12 pr-20 rounded-md bg-gray-600 border-2 border-gray-600 focus:border-blue-800 focus:outline-none"/>
         <select id="language-select" name="selectedLanguage" class=" text-white bg-gray-600 absolute inset-y-0 right-0 py-3/2 px-1 rounded-md focus:outline-none ">
-            <option value="tr">Turkish</option>
             <option value="en">English</option>
+            <option value="tr">Turkish</option>
+            <option value="hi">Hindi</option>
+            <option value="pt">Portuguese</option>
+            <option value="fil">Filipino</option>
+            <option value="de">German</option>
+            <option value="fr">French</option>
+            <option value="id">Indonesian</option>
         </select>
         <div class="absolute inset-y-0 left-0 flex items-center pl-4">
             <svg class="h-6 w-6 text-gray-400" viewBox  ="0 0 24 24" fill="none" stroke="currentColor">
@@ -167,34 +192,34 @@
 
 </div>
 <div class="container mx-auto px-6 py-4">
-  <div class="grid grid-cols-2 gap-4">
-      <div class="bg-black rounded-md">
-          <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
-              <span>Full Subtitle View</span>
-              <button class="tooltip" style="background: #404040; color: white; border: 1px solid #342f26;" onclick="copyText('longsub','myTooltip1')">
-                  Copy
-                  <span class="tooltiptext" id="myTooltip1" style="background-color: #404040; color: white;">Copy to clipboard</span>
-              </button>
+    <div class="grid grid-cols-2 gap-4">
+        <div class="bg-black rounded-md">
+            <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
+                <span>Full Subtitle View</span>
+                <button class="tooltip" style="background: transparent; color: white; " onclick="copyText('longsub','myTooltip1')">
+                    <i class="fa-solid fa-copy"></i>
+                    <span class="tooltiptext" id="myTooltip1" style="background-color: #404040; color: white;">Copy to clipboard</span>
+                </button>
 
-          </div>
-          <div class="bg-gray-900 p-4 overflow-y-scroll h-64 border-2 border-black">
-              <p id="longsub" class="text-white text-sm">
-                  <%=algo.longSub %></p>
-          </div>
-      </div>
-      <div class="bg-black rounded-md">
-          <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
-              <span>The Most Important Parts of the Video</span>
-              <button class="tooltip" style="background: #404040; color: white; border: 1px solid #342f26;"  onclick="copyText('summary','myTooltip2')">
-                  Copy
-                  <span class="tooltiptext" id="myTooltip2" style="background-color: #404040; color: white;">Copy to clipboard</span>
-              </button>
-          </div>
-    <div class="bg-gray-900 p-4 rounded-l-lg overflow-y-scroll h-64 border-2 border-black hover:border-green-300 transition-all duration-300">
-      <p id="summary" class="text-white text-sm mb-4"><%=algo.summ %></p>
+            </div>
+            <div class="bg-gray-900 p-4 overflow-y-scroll h-64 border-2 border-black">
+                <p id="longsub" class="text-white text-sm">
+                    <%=algo.longSub %></p>
+            </div>
+        </div>
+        <div class="bg-black rounded-md">
+            <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
+                <span>The Most Important Parts of the Video</span>
+                <button class="tooltip" style="background: transparent; color: white; "  onclick="copyText('summary','myTooltip2')">
+                    <i class="fa-solid fa-copy"></i>
+                    <span class="tooltiptext" id="myTooltip2" style="background-color: #404040; color: white;">Copy to clipboard</span>
+                </button>
+            </div>
+            <div class="bg-gray-900 p-4 rounded-l-lg overflow-y-scroll h-64 border-2 border-black hover:border-green-300 transition-all duration-300">
+                <p id="summary" class="text-white text-sm mb-4"><%=algo.summ %></p>
+            </div>
+        </div>
     </div>
-      </div>
-  </div>
 </div>
 
 
@@ -204,9 +229,9 @@
     <div class="bg-black rounded-md ">
         <div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-s font-sans justify-between rounded-t-md">
             <span>Summarize with Chatgpt</span>
-            <button class="tooltip" style="background: #404040; color: white; border: 1px solid #342f26;"  onclick="copyText('summarys','myTooltip3')">
-                Copy
-                <span class="tooltiptext" id="myTooltip3" style="background-color: #404040; color: white;">Copy to clipboard</span>
+            <button class="tooltip" style="background: transparent; color: white; "  onclick="copyText('summarys','myTooltip3')">
+                <i class="fa-solid fa-copy"></i>
+                <span class="tooltiptext" id="myTooltip3" style="background-color: #404040; color: white;">Copy</span>
             </button>
         </div>
         <div class="bg-gray-900 p-4 overflow-y-scroll h-64 border-2 border-black">
@@ -258,7 +283,6 @@
 <% }
 else { %>
     <p></p>
-    <% } %>
+<% } %>
 </body>
 </html>
-

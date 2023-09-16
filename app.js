@@ -171,8 +171,7 @@ const subConv = async (id, myData, lang) => {
         console.error(error);
         return {result: `${lang} subtitle not found`, longResult: `${lang} subtitle not found`};
     }
-}
-
+};
 function getYouTubeId(link) {
     let id;
     if (link.includes("youtube.com/watch")) {
