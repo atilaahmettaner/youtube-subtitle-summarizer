@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subtitle Summarizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+<body >
+
+
+
+<div class="flex justify-between     items-center bg-gray-800  p-4">
+
+    <div class=" text-2l font-extrabold">
+        <span class="text-blue-400">Subtitle</span>
+        <span class="text-white ">Summarizer</span>
+    </div>
+
+
+    <a
+            href="https://github.com/atilaahmettaner/youtube-subtitle-summarizer"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            class="flex items-center text-neutral-700 hover:text-neutral-500 dark:text-neutral-100 dark:hover:text-neutral-300"
+    >
+        <i class="fa-brands fa-github mr-2"></i>
+
+    </a>
+</div>
+<div class="bg-gray-800 h-screen flex flex-col justify-center items-center">
+    <p class="text-4xl font-extrabold mt-11 my-4">
+        <span class="text-blue-400">Subtitle</span>
+        <span class="text-white ">Summarizer</span>
+    </p>
+
+    <div class="px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48">
+        <p class="mb-7 text-lg font-normal text-gray-500 lg:text-xl dark:text-white-800">
+            The Youtube video summarizer website is a tool that allows users to automatically create a summary of Youtube videos. Users can simply enter the video URL and obtain a text document that summarizes the important points of the video. This helps users save time and quickly understand the videos.
+            <br><br>
+            Additionally, the website also provides the following features:
+            <ul class="list-disc list-inside text-gray-500 lg:text-xl">
+                <li>Show timestamps for comments</li>
+                <li>Display the most repeated parts of the video</li>
+            </ul>
+        </p>
+    </div>
+  
+    <form action="/summarize" method="post" class="mt-8">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 sm:px-10 rounded-full transition duration-300">Start Summarization</button>
+    </form>
+</div>
+
+
+</body>
+</html>

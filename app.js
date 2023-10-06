@@ -11,6 +11,52 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 import {Configuration, OpenAIApi} from "openai";
 
+import { google } from 'googleapis';
+const apiKey="AIzaSyAL3i_PgYjgVBr7jViU4ffxfhwfsYPSuRo"
+const youtube = google.youtube({
+  version: 'v3',
+  auth: apiKey
+});
+
+async function fetchComments(videoId) {
+  const { data } = await youtube.commentThreads.list({
+    part: 'snippet,replies',
+    videoId,
+    key: apiKey,
+    maxResults: 100
+  });
+
+  let comments = data.items.map(item => item.snippet.topLevelComment.snippet.textDisplay);
+
+  while (data.nextPageToken) {
+    const { data: newData } = await youtube.commentThreads.list({
+      part: 'snippet,replies',
+      videoId,
+      key: apiKey,
+      maxResults: 100,
+      pageToken: data.nextPageToken
+    });
+
+    comments = comments.concat(newData.items.map(item => item.snippet.topLevelComment.snippet.textDisplay));
+    data.nextPageToken = newData.nextPageToken;
+  }
+
+  return comments;
+}
+
+function filterCommentsByTime(comments) {
+    const regex = /(\d{1,2}:\d{2})/g;
+    const matches = comments.map((comment) => {
+      const match = comment.match(regex);
+      return {
+        time: match ? match[0] : null,
+        text: comment,
+      };
+    });
+    return matches.filter((comment) => comment.time !== null);
+  }
+
+
 
 const configuration = new Configuration({
     apiKey: process.env.API_KEY,
@@ -55,15 +101,15 @@ let summ = ""
 let aiSummary = ""
 let aiSummarys = ""
 let title = ""
-
+    
 app.use(bodyParser.urlencoded({extended: true}), express.static("public"));
 
 app.get("/", (req, res) => {
-    res.render("index", {input: null});
+    res.render("home", {input: null});
 });
 let myData = []
 let secondstoMin = []
-app.post("/", async (req, res) => {
+app.post("/summarize", async (req, res) => {
     try {
         let algo = {}
         let myData = []
@@ -98,25 +144,29 @@ app.post("/", async (req, res) => {
 
                     const heatMarkers = newData.items[0];
 
-                    if (!heatMarkers['mostReplayed'] || !heatMarkers['mostReplayed']['heatMarkers'] || heatMarkers['mostReplayed']['heatMarkers'].length === undefined) {
+                    if (!heatMarkers['mostReplayed'] || !heatMarkers['mostReplayed']['markers'] || heatMarkers['mostReplayed']['markers'].length === undefined) {
                         myData.push('0:00')
                     } else {
-                        for (let i = 0; i < heatMarkers['mostReplayed']['heatMarkers'].length; i++) {
-                            if (heatMarkers['mostReplayed']['heatMarkers'][i]['heatMarkerRenderer']['heatMarkerIntensityScoreNormalized'] > 0.8) {
-                                myData.push(millisToMinutesAndSeconds(heatMarkers['mostReplayed']['heatMarkers'][i]['heatMarkerRenderer']['timeRangeStartMillis']))
+                        for (let i = 0; i < heatMarkers['mostReplayed']['markers'].length; i++) {
+                            if (heatMarkers['mostReplayed']['markers'][i]['intensityScoreNormalized'] > 0.8) {
+                                console.log(heatMarkers['mostReplayed']['markers'][i]['startMillis'])
+                                myData.push(millisToMinutesAndSeconds(heatMarkers['mostReplayed']['markers'][i]['startMillis']))
                             }
                         }
                     }
+
+                    console.log(myData)
+                    const comments = await fetchComments(`${input}`);
+                    const timeStamps = filterCommentsByTime(comments);
+                    console.log(timeStamps.map((comment) => comment.time));
                     const secondsData = convertToSeconds(myData)
-                    console.log(secondsData)
                     secondstoMin = secondsData.map(Number)
                     summ = await subConv(`${input}`, secondsData, `${lang}`)
                     title = await getTitle(input)
-                    console.log(title)
                     const text = summ.longResult;
                     aiSummarys = await langDet(lang, summ.result)
-                    console.log(aiSummary)
                     algo = {
+                        timeStamps: timeStamps,
                         aiSummary: aiSummarys,
                         title: title,
                         summ: summ.result,
@@ -208,4 +258,4 @@ async function getTitle(id) {
     const data = await response.json();
     const title = data.items[0].snippet.title;
     return title;
-}
+}   
