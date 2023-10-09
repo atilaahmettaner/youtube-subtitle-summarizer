@@ -15,7 +15,7 @@ import { google } from 'googleapis';
 const apiKey="AIzaSyAL3i_PgYjgVBr7jViU4ffxfhwfsYPSuRo"
 const youtube = google.youtube({
   version: 'v3',
-  auth: apiKey
+  auth: apiKey  
 });
 
 async function fetchComments(videoId) {

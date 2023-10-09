@@ -20,9 +20,7 @@
     "openai": "^3.2.1",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
-    "url": "^0.11.0"
-  },
-  "devDependencies": {
+    "url": "^0.11.0",
     "youtube-captions-scraper": "^2.0.0"
   }
 }
