@@ -245,10 +245,10 @@ function getYouTubeId(link) {
 async function langDet(lang, res) {
     if (lang === "tr") {
         aiSummary = await getAiResponse(`Bu video transkripsiyonunu özetleyebilir misin:${res}.`)
-
     } else if (lang === "en") {
         aiSummary = await getAiResponse(`summarize the transcription of this video?:${res}.`)
-
+    } else if (lang === "es") {
+        aiSummary = await getAiResponse(`Hazme un resumen de la transcripción de este video?:${res}.`)
     }
     return aiSummary
 }
