@@ -18,10 +18,10 @@
     "express-google-analytics": "^1.0.2",
     "googleapis": "^126.0.1",
     "node-fetch": "^3.3.1",
-    "openai": "^3.2.1",
+    "openai": "^4.72.0",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
     "url": "^0.11.0",
-    "youtube-captions-scraper": "^2.0.0"
+    "youtube-captions-scraper": "^2.0.3"
   }
 }
