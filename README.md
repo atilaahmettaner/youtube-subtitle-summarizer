@@ -1,6 +1,6 @@
 
 # YOUTUBE SUBTİTLE SUMMARIZER
-## [youtubesummarizer.tech](https://www.youtubesummarizer.tech/)
+## [youtubesummarizer.tech](https://youtube-summarize.herokuapp.com/)
 
 Summarizer is a web-based tool that uses ChatGPT to automatically generate summaries of YouTube videos.
 It provides a quick and easy way to get the key points of lengthy videos without having to watch them in full.
